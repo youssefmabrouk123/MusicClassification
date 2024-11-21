@@ -1,0 +1,35 @@
+# Stage 1: Build the Angular app
+FROM node:18-alpine AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the Angular application for production
+RUN npm run build -- --output-path=dist --configuration=production
+
+# Stage 2: Serve the app using http-server
+FROM node:18-alpine
+
+# Install http-server globally to serve the Angular app
+RUN npm install -g http-server
+
+# Set the working directory to the built Angular app
+WORKDIR /app
+
+# Copy the built Angular app from the build stage
+COPY --from=build /app/dist /app/dist
+
+# Expose port 8080 (default port for http-server)
+EXPOSE 8080
+
+# Start the http-server to serve the Angular app
+CMD ["http-server", "dist", "-p", "8080"]

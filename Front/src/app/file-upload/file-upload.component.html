@@ -1,0 +1,15 @@
+<div class="file-upload">
+    <h2>Upload Audio File</h2>
+    
+    <input type="file" (change)="onFileSelected($event)" accept=".wav" />
+    <button (click)="onUpload()" [disabled]="!selectedFile">Upload and Predict</button>
+  
+    <div *ngIf="predictionResult" class="result">
+      {{ predictionResult }}
+    </div>
+  
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+  </div>
+  

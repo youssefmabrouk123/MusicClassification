@@ -1,0 +1,5 @@
+flask
+librosa
+numpy
+scikit-learn
+flask_cors
